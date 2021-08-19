@@ -1,12 +1,9 @@
 {
   "version": 2,
-  "dgSpecHash": "xsvJaGYttpoJD1WkGg78kgwK+8nzT9QqP/6gVdmhyx5xXdUHC1cYCDGH1hHWPhTyJa26ARIL+Sj48D7v4Reb/A==",
+  "dgSpecHash": "DCRDgekU1rUuxr2aphReNnR1WW6WThj0nCCL6RpSAtsHd8RgmnYikobq5AuiCuRzH5T4K/MVylFubXzW7t/Xqw==",
   "success": true,
   "projectFilePath": "/Users/guillaumezarb/Documents/GitHub/FlagApi/FlagApi.csproj",
   "expectedPackageFiles": [
-    "/Users/guillaumezarb/.nuget/packages/awssdk.core/3.7.2.3/awssdk.core.3.7.2.3.nupkg.sha512",
-    "/Users/guillaumezarb/.nuget/packages/awssdk.extensions.netcore.setup/3.7.1/awssdk.extensions.netcore.setup.3.7.1.nupkg.sha512",
-    "/Users/guillaumezarb/.nuget/packages/awssdk.secretsmanager/3.7.1.4/awssdk.secretsmanager.3.7.1.4.nupkg.sha512",
     "/Users/guillaumezarb/.nuget/packages/bouncycastle.netcore/1.8.5/bouncycastle.netcore.1.8.5.nupkg.sha512",
     "/Users/guillaumezarb/.nuget/packages/entityframework/6.4.4/entityframework.6.4.4.nupkg.sha512",
     "/Users/guillaumezarb/.nuget/packages/google.protobuf/3.14.0/google.protobuf.3.14.0.nupkg.sha512",

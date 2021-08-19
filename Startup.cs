@@ -25,6 +25,7 @@ namespace FlagApi
         {
 
             services.AddControllers();
+            services.AddHealthChecks();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSwaggerGen(c =>
             {
@@ -56,13 +57,13 @@ namespace FlagApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FlagApi v1"));
             }
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/health");
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -43,7 +43,5 @@
     <PkgMicrosoft_Extensions_ApiDescription_Server Condition=" '$(PkgMicrosoft_Extensions_ApiDescription_Server)' == '' ">/Users/guillaumezarb/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0</PkgMicrosoft_Extensions_ApiDescription_Server>
     <PkgEntityFramework Condition=" '$(PkgEntityFramework)' == '' ">/Users/guillaumezarb/.nuget/packages/entityframework/6.4.4</PkgEntityFramework>
     <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">/Users/guillaumezarb/.nuget/packages/microsoft.entityframeworkcore.tools/5.0.9</PkgMicrosoft_EntityFrameworkCore_Tools>
-    <PkgAWSSDK_Core Condition=" '$(PkgAWSSDK_Core)' == '' ">/Users/guillaumezarb/.nuget/packages/awssdk.core/3.7.2.3</PkgAWSSDK_Core>
-    <PkgAWSSDK_SecretsManager Condition=" '$(PkgAWSSDK_SecretsManager)' == '' ">/Users/guillaumezarb/.nuget/packages/awssdk.secretsmanager/3.7.1.4</PkgAWSSDK_SecretsManager>
   </PropertyGroup>
 </Project>

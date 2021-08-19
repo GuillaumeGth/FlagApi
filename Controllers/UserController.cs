@@ -30,18 +30,21 @@ namespace FlagApi.Controllers
             _context = context;
             _contextAccessor = contextAccessor;
         }
-         //Create a new user if not exists
+         //Retrieve a list of user based on the keyword searched
         [HttpPost]
         [Route("list")]
         public List<User> List(JsonElement arg)
         {            
             try{
-                string query = arg.GetProperty("query").ToString().ToLowerInvariant();
+                string query = arg.GetProperty("query").ToString()?.ToLowerInvariant();
+                if (string.IsNullOrEmpty(query)){
+                    return null;
+                }
                 Logger.Log(query);      
                 List<User> users = _context.Users
-                    .Where(u => u.Name.ToLowerInvariant().Contains(query) || u.Email.ToLowerInvariant().Contains(query))
+                    .Where(u => u.Name.ToLower().Contains(query) || u.Email.ToLower().Contains(query))
                     .ToList<User>();
-                    Logger.Log(users.Count);
+                Logger.Log(users.Count);
                 foreach(User u in users){
                     Logger.Log(u.Name);
                 }

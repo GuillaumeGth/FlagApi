@@ -38,18 +38,6 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
-            "AWSSDK.Core": {
-              "target": "Package",
-              "version": "[3.7.2.3, )"
-            },
-            "AWSSDK.Extensions.NETCore.Setup": {
-              "target": "Package",
-              "version": "[3.7.1, )"
-            },
-            "AWSSDK.SecretsManager": {
-              "target": "Package",
-              "version": "[3.7.1.4, )"
-            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.9, )"
