@@ -14,12 +14,7 @@ namespace FlagApi.Controllers
     public class UserController : ControllerBase
     {
         private DatabaseContext _context;
-        private IHttpContextAccessor _contextAccessor;
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
+        private IHttpContextAccessor _contextAccessor;   
         private readonly ILogger<UserController> _logger;
 
         public UserController(ILogger<UserController> logger, 
@@ -39,8 +34,7 @@ namespace FlagApi.Controllers
                 string query = arg.GetProperty("query").ToString()?.ToLowerInvariant();
                 if (string.IsNullOrEmpty(query)){
                     return null;
-                }
-                Logger.Log(query);      
+                }                
                 List<User> users = _context.Users
                     .Where(u => u.Name.ToLower().Contains(query) || u.Email.ToLower().Contains(query))
                     .ToList<User>();
@@ -58,7 +52,7 @@ namespace FlagApi.Controllers
 
         //Create a new user if not exists
         [HttpPost]
-        public void Get(JsonElement arg)
+        public Guid Get(JsonElement arg)
         {
             User userParam = JsonConvert.DeserializeObject<User>(arg.ToString());
             Console.WriteLine(userParam.Email);                  
@@ -67,10 +61,12 @@ namespace FlagApi.Controllers
                 Logger.Log("not exists");
                 _context.Users.Add(userParam);
                 _context.SaveChanges();
+                Logger.Log(userParam.Id);
             }
             else{
                 Logger.Log("exists");
             }
+            return userParam.Id;
         }
     }
 }

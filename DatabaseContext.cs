@@ -9,7 +9,9 @@ namespace FlagApi
         protected override void OnModelCreating(ModelBuilder modelBuilder)  
         {  
             modelBuilder.Entity<User>().ToTable("users");  
+            modelBuilder.Entity<Message>().ToTable("messages");  
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }   
 }

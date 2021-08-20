@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
+using NpgsqlTypes;
 
 namespace FlagApi.Models
 {
@@ -17,10 +18,18 @@ namespace FlagApi.Models
         public Guid ContentId { get; set; }
 
         [Column("location")]
-        public string Location { get; set; }
+        public NpgsqlPoint Location { get; set; }
 
         [Column("text")]
         public string Text { get; set; }
+
+        [Column("author_id")]
+        public Guid Author { get; set; }
+
+        [Column("destinator_id")]
+        public Guid Destinator { get; set; }
+
+
 
     }
 }

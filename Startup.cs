@@ -9,6 +9,7 @@ using Npgsql;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.AspNetCore.Http;
+using FlagApi.SignalR;
 namespace FlagApi
 {
     public class Startup
@@ -23,7 +24,7 @@ namespace FlagApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddSignalR();
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
