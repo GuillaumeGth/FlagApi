@@ -6,9 +6,11 @@ namespace FlagApi.SignalR
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(Message message)
-        {
-            await Clients.User(message.Destinator.ToString()).SendAsync("ReceiveMessage", message, "testFlag");
+        public async Task SendMessage()
+        {           
+            Logger.Log("signalR SendMessage"); 
+            Logger.Log(Clients);
+            await Clients?.All.SendAsync("ReceiveMessage");
         }
     }
 }

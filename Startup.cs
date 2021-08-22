@@ -64,10 +64,8 @@ namespace FlagApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
-            });
-            app.UseEndpoints(endpoints =>
-            {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }

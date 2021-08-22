@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using NpgsqlTypes;
 using System.Collections.Generic;
+using FlagApi.SignalR;
 namespace FlagApi.Controllers
 {
     [ApiController]
@@ -16,6 +17,7 @@ namespace FlagApi.Controllers
         private DatabaseContext _context;
         private IHttpContextAccessor _contextAccessor;   
         private readonly ILogger<UserController> _logger;
+        private ChatHub ChatHub;
         public MessageController(ILogger<UserController> logger, 
         DatabaseContext context, 
         IHttpContextAccessor contextAccessor)
@@ -23,6 +25,7 @@ namespace FlagApi.Controllers
             _logger = logger;
             _context = context;
             _contextAccessor = contextAccessor;
+            ChatHub = new ChatHub();
         }
         [HttpPost]
         [Route("get/chat")]
@@ -52,7 +55,6 @@ namespace FlagApi.Controllers
         public void Send(JsonElement arg)
         {               
             try{                
-                
                 Logger.Log("send message");
                 DateTime dateTime = DateTime.Now;
                 // DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -68,7 +70,7 @@ namespace FlagApi.Controllers
                     Destinator = Guid.Parse(arg.GetProperty("destinator").ToString())
                 };
                 _context.Messages.Add(newMessage);
-                _context.SaveChanges();                
+                _context.SaveChanges();            
             }
             catch(Exception e){
                 Logger.Error(e);
