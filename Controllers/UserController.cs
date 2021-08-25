@@ -33,7 +33,7 @@ namespace FlagApi.Controllers
             try{
                 string query = arg.GetProperty("query").ToString()?.ToLowerInvariant();
                 if (string.IsNullOrEmpty(query)){
-                    return null;
+                    return new List<User>() { new Models.User () { Name = "John Doe"}}; 
                 }                
                 List<User> users = _context.Users
                     .Where(u => u.Name.ToLower().Contains(query) || u.Email.ToLower().Contains(query))
