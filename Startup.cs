@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using Microsoft.EntityFrameworkCore;
-using System;
 using Microsoft.AspNetCore.Http;
 using FlagApi.SignalR;
 namespace FlagApi
@@ -39,13 +38,8 @@ namespace FlagApi
                 User Id={Configuration["PostgreSql:User"]};
                 Password={Configuration["PostgreSql:ServerPassword"]};
                 Database={Configuration["PostgreSql:DatabaseName"]};
-                SSL Mode=Require;Trust Server Certificate=true";
-            Console.Write("gza");
-            var builder = new NpgsqlConnectionStringBuilder(herokuConnectionString)
-            {
-                
-                //Password = Configuration["PostgreSql:ServerPassword"]
-            };            
+                SSL Mode=Require;Trust Server Certificate=true";        
+            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder(herokuConnectionString);           
             services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.ConnectionString));
         }
 
@@ -57,10 +51,10 @@ namespace FlagApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FlagApi v1"));
-            }
-            app.UseHttpsRedirection();
+            }            
+            //app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseAuthorization();
+            //app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
