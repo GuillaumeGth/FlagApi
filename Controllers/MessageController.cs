@@ -34,12 +34,10 @@ namespace FlagApi.Controllers
             try{
 
                 Guid author = Guid.Parse(arg.GetProperty("author").ToString());
-                Guid destinator = Guid.Parse(arg.GetProperty("destinator").ToString());
-                Logger.Log(author);
-                Logger.Log(destinator);
+                Guid recipient = Guid.Parse(arg.GetProperty("recipient").ToString());                
                 List<Message> messages = _context.Messages
-                    .Where(m => (m.Author == author && m.Destinator == destinator)
-                    || (m.Author == destinator && m.Destinator == author))
+                    .Where(m => (m.Author == author && m.Recipient == recipient)
+                    || (m.Author == recipient && m.Recipient == author))
                     .OrderBy(m => m.Date)
                     .Take(100)?.ToList() ?? new List<Message>();
                 Logger.Log(messages.Count);
@@ -54,8 +52,7 @@ namespace FlagApi.Controllers
         [Route("send")]
         public void Send(JsonElement arg)
         {               
-            try{                
-                Logger.Log("send message");
+            try{                                
                 DateTime dateTime = DateTime.Now;
                 // DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 // Logger.Log(arg.GetProperty("date").ToString());
@@ -67,7 +64,7 @@ namespace FlagApi.Controllers
                         double.Parse(arg.GetProperty("lat").ToString()), 
                         double.Parse(arg.GetProperty("lon").ToString())),
                     Author = Guid.Parse(arg.GetProperty("author").ToString()),
-                    Destinator = Guid.Parse(arg.GetProperty("destinator").ToString())
+                    Recipient = Guid.Parse(arg.GetProperty("recipient").ToString())
                 };
                 _context.Messages.Add(newMessage);
                 _context.SaveChanges();            

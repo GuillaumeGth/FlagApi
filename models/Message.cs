@@ -26,8 +26,8 @@ namespace FlagApi.Models
         [Column("author_id")]
         public Guid Author { get; set; }
 
-        [Column("destinator_id")]
-        public Guid Destinator { get; set; }
+        [Column("recipient_id")]
+        public Guid Recipient { get; set; }
 
 
 
