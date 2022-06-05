@@ -16,5 +16,8 @@ namespace FlagApi.Models
         [Key]
         [Column("id")]
         public Guid Id { get; set; }
+                
+        [Column("picture_url")]
+        public string PictureUrl  { get; set; }
     }
 }

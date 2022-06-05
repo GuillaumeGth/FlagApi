@@ -28,13 +28,10 @@ namespace FlagApi.Controllers
          //Retrieve a list of user based on the keyword searched
         [HttpPost]
         [Route("list")]
-        public List<User> List(JsonElement arg)
-        {            
+        public ActionResult List(JsonElement arg)
+        {
             try{
-                string query = arg.GetProperty("query").ToString()?.ToLowerInvariant();
-                if (string.IsNullOrEmpty(query)){
-                    return new List<User>() { new Models.User () { Name = "John Doe"}}; 
-                }                
+                string query = arg.GetProperty("query").ToString()?.ToLowerInvariant();                
                 List<User> users = _context.Users
                     .Where(u => u.Name.ToLower().Contains(query) || u.Email.ToLower().Contains(query))
                     .ToList<User>();
@@ -42,18 +39,18 @@ namespace FlagApi.Controllers
                 foreach(User u in users){
                     Logger.Log(u.Name);
                 }
-                return users;
+                return Ok(users);
             }
             catch(Exception e){
                 Logger.Error(e);
                 return null;
-            }              
+            }
         }
 
-        //Create a new user if not exists
+        //Get or create a new user if not exists
         [HttpPost]
-        public Guid Get(JsonElement arg)
-        {
+        public ActionResult Get(JsonElement arg)
+        {            
             User userParam = JsonConvert.DeserializeObject<User>(arg.ToString());
             Console.WriteLine(userParam.Email);                  
             bool exists = _context.Users.Any(u => u.Email == userParam.Email);
@@ -64,9 +61,10 @@ namespace FlagApi.Controllers
                 Logger.Log(userParam.Id);
             }
             else{
+                userParam = _context.Users.First(u => u.Email == userParam.Email);
                 Logger.Log("exists");
             }
-            return userParam.Id;
+            return Ok(userParam.Id);            
         }
     }
 }

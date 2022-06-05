@@ -29,10 +29,9 @@ namespace FlagApi.Controllers
         }
         [HttpPost]
         [Route("get/chat")]
-        public List<Message> Chat(JsonElement arg)
-        { 
+        public ActionResult Chat(JsonElement arg)
+        {             
             try{
-
                 Guid author = Guid.Parse(arg.GetProperty("author").ToString());
                 Guid recipient = Guid.Parse(arg.GetProperty("recipient").ToString());                
                 List<Message> messages = _context.Messages
@@ -41,22 +40,21 @@ namespace FlagApi.Controllers
                     .OrderBy(m => m.Date)
                     .Take(100)?.ToList() ?? new List<Message>();
                 Logger.Log(messages.Count);
-                return messages;
+                return Ok(messages);       
             }
-            catch(Exception e){
+            catch(Exception e){                
                 Logger.Error(e);
             }
             return null;
         }
         [HttpPost]
         [Route("send")]
-        public void Send(JsonElement arg)
-        {               
-            try{                                
-                DateTime dateTime = DateTime.Now;
-                // DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                // Logger.Log(arg.GetProperty("date").ToString());
-                // dateTime = dateTime.AddSeconds(double.Parse(arg.GetProperty("date").ToString())).ToLocalTime();           
+        public ActionResult Send(JsonElement arg)
+        {           
+            try{  
+                Logger.Log("send message");  
+                Logger.Log(arg);                            
+                DateTime dateTime = DateTime.Now;        
                 Message newMessage = new Message(){
                     Text = arg.GetProperty("content").ToString(),
                     Date = dateTime,
@@ -67,11 +65,27 @@ namespace FlagApi.Controllers
                     Recipient = Guid.Parse(arg.GetProperty("recipient").ToString())
                 };
                 _context.Messages.Add(newMessage);
-                _context.SaveChanges();            
+                _context.SaveChanges(); 
             }
             catch(Exception e){
                 Logger.Error(e);
+                return null;
             }
+            return Ok();
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult GetMessages(Guid id){
+            try{
+                var messages =  _context.Messages
+                    .Where(m => m.Recipient == id).ToList();
+                Logger.Log(messages);
+                return Ok(messages);
+            }
+            catch(Exception e){
+                Logger.Error(e);
+                return null;
+            }            
         }
     }
 }
