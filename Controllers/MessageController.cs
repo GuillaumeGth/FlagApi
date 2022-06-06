@@ -35,8 +35,8 @@ namespace FlagApi.Controllers
                 Guid author = Guid.Parse(arg.GetProperty("author").ToString());
                 Guid recipient = Guid.Parse(arg.GetProperty("recipient").ToString());                
                 List<Message> messages = _context.Messages
-                    .Where(m => (m.Author == author && m.Recipient == recipient)
-                    || (m.Author == recipient && m.Recipient == author))
+                    .Where(m => (m.AuthorId == author && m.RecipientId == recipient)
+                    || (m.AuthorId == recipient && m.RecipientId == author))
                     .OrderBy(m => m.Date)
                     .Take(100)?.ToList() ?? new List<Message>();
                 Logger.Log(messages.Count);
@@ -61,8 +61,8 @@ namespace FlagApi.Controllers
                     Location = new NpgsqlPoint(
                         double.Parse(arg.GetProperty("lat").ToString()), 
                         double.Parse(arg.GetProperty("lon").ToString())),
-                    Author = Guid.Parse(arg.GetProperty("author").ToString()),
-                    Recipient = Guid.Parse(arg.GetProperty("recipient").ToString())
+                    AuthorId = Guid.Parse(arg.GetProperty("author").ToString()),
+                    RecipientId = Guid.Parse(arg.GetProperty("recipient").ToString())
                 };
                 _context.Messages.Add(newMessage);
                 _context.SaveChanges(); 
@@ -74,13 +74,34 @@ namespace FlagApi.Controllers
             return Ok();
         }
         [HttpGet]
-        [Route("{id}")]
+        [Route("user/{id}")]
         public ActionResult GetMessages(Guid id){
             try{
                 var messages =  _context.Messages
-                    .Where(m => m.Recipient == id).ToList();
-                Logger.Log(messages);
+                    .Where(m => m.RecipientId == id).ToList();
+
+                messages.ForEach(m => { 
+                    // if(m.Author == null){
+                    //     m.Author = _context.Users.First(u => u.Id == m.AuthorId);
+                    // }
+                    Logger.Log(m);
+                });       
                 return Ok(messages);
+            }
+            catch(Exception e){
+                Logger.Error(e);
+                return null;
+            }            
+        }
+        [HttpGet]
+        [Route("flag/{id}")]
+        public ActionResult GetFlag(Guid id){
+            try{
+                var message =  _context.Messages
+                    .First(m => m.Id == id);
+
+                Logger.Log(message);
+                return Ok(message);
             }
             catch(Exception e){
                 Logger.Error(e);

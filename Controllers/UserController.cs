@@ -61,10 +61,28 @@ namespace FlagApi.Controllers
                 Logger.Log(userParam.Id);
             }
             else{
-                userParam = _context.Users.First(u => u.Email == userParam.Email);
-                Logger.Log("exists");
+                User u = _context.Users.First(u => u.Email == userParam.Email);
+                Logger.Log(userParam.PictureUrl);
+                u.PictureUrl = userParam.PictureUrl;
+                _context.Users.Update(u);
+                _context.SaveChanges();
+                return Ok(u.Id);
             }
-            return Ok(userParam.Id);            
+            return Ok(userParam.Id);    
         }
+    
+         //Retrieve a list of user based on the keyword searched
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult GetUser(Guid id)
+        {
+            try{
+                return Ok(_context.Users.First(u => u.Id == id));
+            }
+            catch(Exception e){
+                Logger.Error(e);
+                return null;
+            }
+        }   
     }
 }

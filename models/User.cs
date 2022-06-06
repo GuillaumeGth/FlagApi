@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
-
+using System.Collections.Generic;
 namespace FlagApi.Models
 {
     public class User
@@ -19,5 +19,7 @@ namespace FlagApi.Models
                 
         [Column("picture_url")]
         public string PictureUrl  { get; set; }
+        public List<Message> MessagesSent {get; set;}
+        public List<Message> MessagesReceived {get; set;}
     }
 }

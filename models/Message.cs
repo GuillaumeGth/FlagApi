@@ -21,15 +21,25 @@ namespace FlagApi.Models
         public NpgsqlPoint Location { get; set; }
 
         [Column("text")]
-        public string Text { get; set; }
-
-        [Column("author_id")]
-        public Guid Author { get; set; }
-
+        public string Text { get; set; }  
+         [Column("author_id")]
+        public Guid? AuthorId { get; set; }
+        [ForeignKey("AuthorId")]             
+        public User Author { get; set; }
+                
         [Column("recipient_id")]
-        public Guid Recipient { get; set; }
-
-
-
+        public Guid? RecipientId { get; set; }
+        [ForeignKey("RecipientId")]  
+        public User Recipient { get; set; }
+        public override string ToString()
+        {
+            string str = string.Empty;
+            str += $"author id: {AuthorId}";
+//             str += @$"
+// author: {Author?.Name}";
+//              str += @$"
+// recipient: {Recipient?.Name}";
+            return str;
+        }
     }
 }
