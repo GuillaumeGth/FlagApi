@@ -28,10 +28,12 @@ namespace FlagApi.Controllers
          //Retrieve a list of user based on the keyword searched
         [HttpPost]
         [Route("list")]
-        public ActionResult List(JsonElement arg)
+        public ActionResult List([FromForm] FormData arg)
         {
-            try{
-                string query = arg.GetProperty("query").ToString()?.ToLowerInvariant();                
+            try
+            {
+                Logger.Log(arg);
+                string query = arg.Query;
                 List<User> users = _context.Users
                     .Where(u => u.Name.ToLower().Contains(query) || u.Email.ToLower().Contains(query))
                     .ToList<User>();
@@ -49,20 +51,19 @@ namespace FlagApi.Controllers
 
         //Get or create a new user if not exists
         [HttpPost]
-        public ActionResult Get(JsonElement arg)
+        public ActionResult Get([FromForm] User arg)
         {            
-            User userParam = JsonConvert.DeserializeObject<User>(arg.ToString());
-            Console.WriteLine(userParam.Email);                  
+            User userParam = arg;                           
             bool exists = _context.Users.Any(u => u.Email == userParam.Email);
             if (!exists) {                
                 Logger.Log("not exists");
                 _context.Users.Add(userParam);
                 _context.SaveChanges();
-                Logger.Log(userParam.Id);
+                Logger.Log(userParam);
             }
             else{
                 User u = _context.Users.First(u => u.Email == userParam.Email);
-                Logger.Log(userParam.PictureUrl);
+                Logger.Log(u);
                 u.PictureUrl = userParam.PictureUrl;
                 _context.Users.Update(u);
                 _context.SaveChanges();

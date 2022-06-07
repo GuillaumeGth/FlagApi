@@ -49,20 +49,20 @@ namespace FlagApi.Controllers
         }
         [HttpPost]
         [Route("send")]
-        public ActionResult Send(JsonElement arg)
+        public ActionResult Send([FromForm] Message arg)
         {           
             try{  
                 Logger.Log("send message");  
                 Logger.Log(arg);                            
                 DateTime dateTime = DateTime.Now;        
                 Message newMessage = new Message(){
-                    Text = arg.GetProperty("content").ToString(),
+                    Text = arg.Text,
                     Date = dateTime,
                     Location = new NpgsqlPoint(
-                        double.Parse(arg.GetProperty("lat").ToString()), 
-                        double.Parse(arg.GetProperty("lon").ToString())),
-                    AuthorId = Guid.Parse(arg.GetProperty("author").ToString()),
-                    RecipientId = Guid.Parse(arg.GetProperty("recipient").ToString())
+                        arg.Latitude, 
+                        arg.Longitude),
+                    AuthorId = arg.AuthorId,
+                    RecipientId = arg.RecipientId
                 };
                 _context.Messages.Add(newMessage);
                 _context.SaveChanges(); 
@@ -75,15 +75,11 @@ namespace FlagApi.Controllers
         }
         [HttpGet]
         [Route("user/{id}")]
-        public ActionResult GetMessages(Guid id){
-            try{
+        public ActionResult GetMessages(Guid guid){
+            try{                
                 var messages =  _context.Messages
-                    .Where(m => m.RecipientId == id).ToList();
-
-                messages.ForEach(m => { 
-                    // if(m.Author == null){
-                    //     m.Author = _context.Users.First(u => u.Id == m.AuthorId);
-                    // }
+                    .Where(m => m.RecipientId == guid).ToList();
+                messages.ForEach(m => {                    
                     Logger.Log(m);
                 });       
                 return Ok(messages);
@@ -95,13 +91,29 @@ namespace FlagApi.Controllers
         }
         [HttpGet]
         [Route("flag/{id}")]
-        public ActionResult GetFlag(Guid id){
+        public ActionResult GetFlag([FromForm] Message message){
+            try{
+                var m =  _context.Messages
+                    .First(m => m.Id == message.Id);
+
+                Logger.Log(m);
+                return Ok(m);
+            }
+            catch(Exception e){
+                Logger.Error(e);
+                return null;
+            }            
+        }
+        [HttpGet]
+        [Route("flag/{id}/opended")]
+        public ActionResult ChangeFlagStatus(Guid id){
             try{
                 var message =  _context.Messages
                     .First(m => m.Id == id);
-
-                Logger.Log(message);
-                return Ok(message);
+                message.Seen = true;
+                _context.Update(message);
+                _context.SaveChanges();                
+                return Ok();
             }
             catch(Exception e){
                 Logger.Error(e);
