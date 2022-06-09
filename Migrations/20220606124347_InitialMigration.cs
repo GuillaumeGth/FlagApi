@@ -8,6 +8,11 @@ namespace FlagApi.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            // migrationBuilder.DropTable(
+            //     name: "messages");
+
+            migrationBuilder.DropTable(
+                name: "users");
             migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new

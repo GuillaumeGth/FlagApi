@@ -3,61 +3,67 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using NpgsqlTypes;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using  Microsoft.AspNetCore.Mvc;
 
 namespace FlagApi.Models
 {
     public class Message
     {
-        [Key]
-        [Column("id")]
-        [JsonProperty("id")]
-        public Guid Id { get; set; }
+        //[Key]
+        [Column("id")]        
+        public Guid? Id { get; set; }
 
-        [Column("date")]
-        [JsonProperty("date")]
-        public DateTime Date { get; set; }
-
+        [Column("date")]        
+        public DateTime? Date { get; set; }
         [Column("content_id")]
-        public Guid ContentId { get; set; }
+        public Guid? ContentId { get; set; }
 
         [Column("location")]
-        public NpgsqlPoint Location { get; set; }
-
-        [JsonProperty("lat")]
+        public NpgsqlPoint? Location { get; set; }        
+        [FromForm(Name = "lat")]
         [NotMapped]
-        public double Latitude {get; set;}
-        [JsonProperty("long")]
+        public double Latitude {get; set;}        
+        [FromForm(Name = "lon")]
          [NotMapped]
         public double Longitude {get; set;}
-
         [Column("text")]
-        [JsonProperty("content")]
+        [FromForm(Name = "content")]
         public string Text { get; set; }  
-        [Column("author_id")]
-        [JsonProperty("author")]
+        [Column("author_id")]        
+        [FromForm(Name = "author")]
         public Guid? AuthorId { get; set; }
         [ForeignKey("AuthorId")]             
         public User Author { get; set; }
-        [JsonProperty("recipient")]
+        [FromForm(Name = "recipient")]
         [Column("recipient_id")]
         public Guid? RecipientId { get; set; }
         [ForeignKey("RecipientId")]  
-        public User Recipient { get; set; }
-        [JsonProperty("seen")]
+        public User Recipient { get; set; }        
+        [FromForm(Name = "seen")]
         [Column("seen")]
-        public bool Seen {get; set;}
+        public bool Seen {get; set;}        
+        [NotMapped]
+        public IFormFile File {get; set;}        
         public override string ToString()
         {
             string str = string.Empty;
+            str += @":: Message ::
+";
             str += $@"{nameof(Id)} {Id}
 ";
             str += $@"{nameof(AuthorId)} {AuthorId}
 ";
             str += $@"{nameof(RecipientId)} {RecipientId}
-";
+";            
             str += $@"{nameof(Text)} {Text}
+";
+            str += $@"{nameof(File)} {File?.FileName}
+";
+            str += $@"{nameof(Location)} {Location}
 ";
             return str;
         }
+
     }
 }

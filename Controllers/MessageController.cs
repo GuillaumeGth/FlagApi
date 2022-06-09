@@ -52,33 +52,34 @@ namespace FlagApi.Controllers
         public ActionResult Send([FromForm] Message arg)
         {           
             try{  
-                Logger.Log("send message");  
-                Logger.Log(arg);                            
-                DateTime dateTime = DateTime.Now;        
+                Logger.Log("send message");                                         
+                DateTime dateTime = DateTime.Now;
                 Message newMessage = new Message(){
                     Text = arg.Text,
-                    Date = dateTime,
+                    Date = dateTime,                    
                     Location = new NpgsqlPoint(
                         arg.Latitude, 
                         arg.Longitude),
                     AuthorId = arg.AuthorId,
                     RecipientId = arg.RecipientId
                 };
+                Logger.Log(newMessage);
                 _context.Messages.Add(newMessage);
-                _context.SaveChanges(); 
+                _context.SaveChanges();
+                return Ok(newMessage);
             }
             catch(Exception e){
+                Logger.Error("fail");
                 Logger.Error(e);
                 return null;
             }
-            return Ok();
         }
         [HttpGet]
         [Route("user/{id}")]
-        public ActionResult GetMessages(Guid guid){
-            try{                
+        public ActionResult GetMessages(Guid id){
+            try{                  
                 var messages =  _context.Messages
-                    .Where(m => m.RecipientId == guid).ToList();
+                    .Where(m => m.RecipientId == id).ToList();
                 messages.ForEach(m => {                    
                     Logger.Log(m);
                 });       
@@ -105,15 +106,16 @@ namespace FlagApi.Controllers
             }            
         }
         [HttpGet]
-        [Route("flag/{id}/opended")]
+        [Route("opended/{id}")]
         public ActionResult ChangeFlagStatus(Guid id){
             try{
+                Logger.Log("opened");
                 var message =  _context.Messages
                     .First(m => m.Id == id);
                 message.Seen = true;
                 _context.Update(message);
                 _context.SaveChanges();                
-                return Ok();
+                return Ok(message);
             }
             catch(Exception e){
                 Logger.Error(e);

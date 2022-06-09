@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FlagApi.Models;
 using Microsoft.AspNetCore.Http;
-using System.Text.Json;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 namespace FlagApi.Controllers
 {
@@ -32,14 +30,13 @@ namespace FlagApi.Controllers
         {
             try
             {
-                Logger.Log(arg);
                 string query = arg.Query;
                 List<User> users = _context.Users
                     .Where(u => u.Name.ToLower().Contains(query) || u.Email.ToLower().Contains(query))
                     .ToList<User>();
                 Logger.Log(users.Count);
                 foreach(User u in users){
-                    Logger.Log(u.Name);
+                    Logger.Log(u);
                 }
                 return Ok(users);
             }
@@ -52,24 +49,23 @@ namespace FlagApi.Controllers
         //Get or create a new user if not exists
         [HttpPost]
         public ActionResult Get([FromForm] User arg)
-        {            
-            User userParam = arg;                           
-            bool exists = _context.Users.Any(u => u.Email == userParam.Email);
+        {                                    
+            bool exists = _context.Users.Any(u => u.Email == arg.Email);
             if (!exists) {                
                 Logger.Log("not exists");
-                _context.Users.Add(userParam);
+                _context.Users.Add(arg);
                 _context.SaveChanges();
-                Logger.Log(userParam);
+                Logger.Log(arg);
             }
             else{
-                User u = _context.Users.First(u => u.Email == userParam.Email);
+                User u = _context.Users.First(u => u.Email == arg.Email);
                 Logger.Log(u);
-                u.PictureUrl = userParam.PictureUrl;
+                u.PictureUrl = arg.PictureUrl;
                 _context.Users.Update(u);
                 _context.SaveChanges();
                 return Ok(u.Id);
             }
-            return Ok(userParam.Id);    
+            return Ok(arg.Id);    
         }
     
          //Retrieve a list of user based on the keyword searched
