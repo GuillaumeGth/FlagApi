@@ -11,8 +11,8 @@ using NpgsqlTypes;
 namespace FlagApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220606124347_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220610210625_contentMigration2")]
+    partial class contentMigration2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,9 +22,33 @@ namespace FlagApi.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("FlagApi.Models.Content", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("content_id");
+
+                    b.Property<string>("ContentName")
+                        .HasColumnType("text")
+                        .HasColumnName("content_name");
+
+                    b.Property<string>("ContentPath")
+                        .HasColumnType("text")
+                        .HasColumnName("content_path");
+
+                    b.Property<int>("ContentType")
+                        .HasColumnType("integer")
+                        .HasColumnName("content_type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("contents");
+                });
+
             modelBuilder.Entity("FlagApi.Models.Message", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
@@ -33,15 +57,15 @@ namespace FlagApi.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("author_id");
 
-                    b.Property<Guid>("ContentId")
+                    b.Property<Guid?>("ContentId")
                         .HasColumnType("uuid")
                         .HasColumnName("content_id");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("date");
 
-                    b.Property<NpgsqlPoint>("Location")
+                    b.Property<NpgsqlPoint?>("Location")
                         .HasColumnType("point")
                         .HasColumnName("location");
 
@@ -49,9 +73,17 @@ namespace FlagApi.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("recipient_id");
 
+                    b.Property<bool>("Seen")
+                        .HasColumnType("boolean")
+                        .HasColumnName("seen");
+
                     b.Property<string>("Text")
                         .HasColumnType("text")
                         .HasColumnName("text");
+
+                    b.Property<Guid?>("content_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("content_id1");
 
                     b.HasKey("Id");
 
@@ -59,12 +91,14 @@ namespace FlagApi.Migrations
 
                     b.HasIndex("RecipientId");
 
+                    b.HasIndex("content_id");
+
                     b.ToTable("messages");
                 });
 
             modelBuilder.Entity("FlagApi.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
@@ -96,7 +130,13 @@ namespace FlagApi.Migrations
                         .WithMany("MessagesReceived")
                         .HasForeignKey("RecipientId");
 
+                    b.HasOne("FlagApi.Models.Content", "Content")
+                        .WithMany()
+                        .HasForeignKey("content_id");
+
                     b.Navigation("Author");
+
+                    b.Navigation("Content");
 
                     b.Navigation("Recipient");
                 });

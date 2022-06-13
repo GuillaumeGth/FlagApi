@@ -10,7 +10,8 @@ namespace FlagApi
         protected override void OnModelCreating(ModelBuilder modelBuilder)  
         {            
             modelBuilder.Entity<User>().ToTable("users");  
-            modelBuilder.Entity<Message>().ToTable("messages");            
+            modelBuilder.Entity<Message>().ToTable("messages");   
+            modelBuilder.Entity<Content>().ToTable("contents");
 
             modelBuilder.Entity<Message>()
                 .HasOne(x => x.Author)
@@ -24,5 +25,6 @@ namespace FlagApi
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Content> Contents { get; set; }
     }   
 }

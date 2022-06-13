@@ -3,6 +3,7 @@ using System;
 using FlagApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -10,9 +11,10 @@ using NpgsqlTypes;
 namespace FlagApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220610140459_contentMigration")]
+    partial class contentMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,20 +26,16 @@ namespace FlagApi.Migrations
                 {
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("content_id");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ContentName")
-                        .HasColumnType("text")
-                        .HasColumnName("content_name");
+                        .HasColumnType("text");
 
                     b.Property<string>("ContentPath")
-                        .HasColumnType("text")
-                        .HasColumnName("content_path");
+                        .HasColumnType("text");
 
                     b.Property<int>("ContentType")
-                        .HasColumnType("integer")
-                        .HasColumnName("content_type");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

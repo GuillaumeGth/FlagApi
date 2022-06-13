@@ -8,6 +8,8 @@ using System.Text.Json;
 using NpgsqlTypes;
 using System.Collections.Generic;
 using FlagApi.SignalR;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 namespace FlagApi.Controllers
 {
     [ApiController]
@@ -18,13 +20,16 @@ namespace FlagApi.Controllers
         private IHttpContextAccessor _contextAccessor;   
         private readonly ILogger<UserController> _logger;
         private ChatHub ChatHub;
+        private IWebHostEnvironment _environment;        
         public MessageController(ILogger<UserController> logger, 
         DatabaseContext context, 
-        IHttpContextAccessor contextAccessor)
+        IHttpContextAccessor contextAccessor,
+        IWebHostEnvironment environment)
         {
             _logger = logger;
             _context = context;
             _contextAccessor = contextAccessor;
+            _environment = environment;
             ChatHub = new ChatHub();
         }
         [HttpPost]
@@ -51,8 +56,28 @@ namespace FlagApi.Controllers
         [Route("send")]
         public ActionResult Send([FromForm] Message arg)
         {           
-            try{  
-                Logger.Log("send message");                                         
+            try{ 
+                Logger.Log("send message");   
+                var files = this.HttpContext.Request.Form.Files;
+                if (files.Count > 0){
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }  
+                    var file = files[0];                                       
+                    string filePath = Path.Combine(path, file.FileName);
+                    using (Stream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                    {
+                        file.CopyTo(fileStream);
+                    }                                     
+                    Content c = new Content() {
+                        ContentPath = filePath,
+                        ContentName = file.FileName                
+                    };
+                    _context.Contents.Add(c);
+                    arg.ContentId = c.Id;
+                }                                                      
                 DateTime dateTime = DateTime.Now;
                 Message newMessage = new Message(){
                     Text = arg.Text,
@@ -61,15 +86,15 @@ namespace FlagApi.Controllers
                         arg.Latitude, 
                         arg.Longitude),
                     AuthorId = arg.AuthorId,
-                    RecipientId = arg.RecipientId
+                    RecipientId = arg.RecipientId,
+                    ContentId = arg.ContentId
                 };
                 Logger.Log(newMessage);
                 _context.Messages.Add(newMessage);
                 _context.SaveChanges();
                 return Ok(newMessage);
             }
-            catch(Exception e){
-                Logger.Error("fail");
+            catch(Exception e){                
                 Logger.Error(e);
                 return null;
             }
