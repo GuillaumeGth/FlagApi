@@ -26,6 +26,8 @@ namespace FlagApi
             services.AddControllers();
             services.AddHealthChecks();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            // In general
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FlagApi", Version = "v1" });
@@ -53,6 +55,14 @@ namespace FlagApi
             }            
             //app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(builder =>
+            {
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            });
+
             //app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
