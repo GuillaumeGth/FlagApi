@@ -32,7 +32,7 @@ namespace FlagApi.Controllers
             {
                 string query = arg.Query;
                 List<User> users = _context.Users
-                    .Where(u => u.Name.ToLower().Contains(query) || u.Email.ToLower().Contains(query))
+                    .Where(u => u.Name.ToLower().Contains(query.ToLower()) || u.Email.ToLower().Contains(query.ToLower()))
                     .ToList<User>();
                 Logger.Log(users.Count);
                 foreach(User u in users){
