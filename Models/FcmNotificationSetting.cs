@@ -4,5 +4,10 @@ namespace FlagApi.Models
     {
         public string SenderId { get; set; }
         public string ServerKey { get; set; }
+        public override string ToString()
+        {
+            return $@"SenderId: {SenderId}
+ServerKey: {ServerKey}";    
+        }
     }
 }

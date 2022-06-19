@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.IO;
 
 namespace FlagApi.Models
 {
@@ -13,16 +14,18 @@ namespace FlagApi.Models
         [JsonProperty("body")]
         public string Body { get; set; }
     }
-
+    public class DataPayload
+    {
+        [JsonProperty("title")]
+        public string Title { get; set; }
+        [JsonProperty("body")]
+        public string Body { get; set; }
+        [JsonProperty("imageUrl")]
+        public string Imageurl {get;set;} = $"{Path.Combine(Directory.GetCurrentDirectory(), "assets", "images")}/flag_logo_small.png";
+    }
     public class GoogleNotification
     {
-        public class DataPayload
-        {
-            [JsonProperty("title")]
-            public string Title { get; set; }
-            [JsonProperty("body")]
-            public string Body { get; set; }
-        }
+        
         [JsonProperty("priority")]
         public string Priority { get; set; } = "high";
         [JsonProperty("data")]
