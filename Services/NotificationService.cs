@@ -46,6 +46,9 @@ namespace FlagApi.Services
                     DataPayload dataPayload = new DataPayload();
                     dataPayload.Title = notificationModel.Title;
                     dataPayload.Body = notificationModel.Body;
+                    
+                    dataPayload.Data["body"] = notificationModel.Body;
+                    dataPayload.Data["title"] = notificationModel.Title;
 
                     GoogleNotification notification = new GoogleNotification();
                     notification.Data = dataPayload;
