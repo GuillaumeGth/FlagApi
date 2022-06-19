@@ -33,6 +33,8 @@
     ".NETCoreApp,Version=v5.0": {
       "FlagApi/1.0.0": {
         "dependencies": {
+          "CorePush": "3.0.12",
+          "FirebaseAdmin": "2.3.0",
           "Microsoft.AspNetCore.SignalR": "1.1.0",
           "Microsoft.EntityFrameworkCore": "5.0.9",
           "Microsoft.EntityFrameworkCore.Design": "5.0.9",
@@ -336,15 +338,20 @@
           "FlagApi.dll": {}
         }
       },
-      "BouncyCastle.NetCore/1.8.5": {
+      "BouncyCastle.NetCore/1.8.5": {},
+      "CorePush/3.0.12": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "Portable.BouncyCastle": "1.9.0"
+        },
         "runtime": {
-          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
-            "assemblyVersion": "1.8.5.0",
-            "fileVersion": "1.8.19031.1"
+          "lib/netstandard2.0/CorePush.dll": {
+            "assemblyVersion": "3.0.12.0",
+            "fileVersion": "3.0.12.0"
           }
         },
         "compile": {
-          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
+          "lib/netstandard2.0/CorePush.dll": {}
         }
       },
       "EntityFramework/6.4.4": {
@@ -368,6 +375,100 @@
         "compile": {
           "lib/netstandard2.1/EntityFramework.SqlServer.dll": {},
           "lib/netstandard2.1/EntityFramework.dll": {}
+        }
+      },
+      "FirebaseAdmin/2.3.0": {
+        "dependencies": {
+          "Google.Api.Gax.Rest": "3.2.0",
+          "Google.Apis.Auth": "1.49.0",
+          "System.Collections.Immutable": "5.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FirebaseAdmin.dll": {
+            "assemblyVersion": "2.3.0.0",
+            "fileVersion": "2.3.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/FirebaseAdmin.dll": {}
+        }
+      },
+      "Google.Api.Gax/3.2.0": {
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "1.0.0",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Api.Gax.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Api.Gax.dll": {}
+        }
+      },
+      "Google.Api.Gax.Rest/3.2.0": {
+        "dependencies": {
+          "Google.Api.Gax": "3.2.0",
+          "Google.Apis.Auth": "1.49.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Api.Gax.Rest.dll": {
+            "assemblyVersion": "3.2.0.0",
+            "fileVersion": "3.2.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Api.Gax.Rest.dll": {}
+        }
+      },
+      "Google.Apis/1.49.0": {
+        "dependencies": {
+          "Google.Apis.Core": "1.49.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.dll": {
+            "assemblyVersion": "1.49.0.0",
+            "fileVersion": "1.49.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.dll": {}
+        }
+      },
+      "Google.Apis.Auth/1.49.0": {
+        "dependencies": {
+          "Google.Apis": "1.49.0",
+          "Google.Apis.Core": "1.49.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {
+            "assemblyVersion": "1.49.0.0",
+            "fileVersion": "1.49.0.0"
+          },
+          "lib/netstandard2.0/Google.Apis.Auth.dll": {
+            "assemblyVersion": "1.49.0.0",
+            "fileVersion": "1.49.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.Auth.PlatformServices.dll": {},
+          "lib/netstandard2.0/Google.Apis.Auth.dll": {}
+        }
+      },
+      "Google.Apis.Core/1.49.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Google.Apis.Core.dll": {
+            "assemblyVersion": "1.49.0.0",
+            "fileVersion": "1.49.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Google.Apis.Core.dll": {}
         }
       },
       "Google.Protobuf/3.14.0": {
@@ -578,6 +679,17 @@
         "dependencies": {
           "Microsoft.Net.Http.Headers": "2.2.0",
           "System.Text.Encodings.Web": "4.5.0"
+        }
+      },
+      "Microsoft.Bcl.AsyncInterfaces/1.0.0": {
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "4.700.19.46214"
+          }
+        },
+        "compile": {
+          "ref/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {}
         }
       },
       "Microsoft.CSharp/4.7.0": {},
@@ -1088,6 +1200,17 @@
         },
         "compile": {
           "lib/netstandard2.1/Pomelo.EntityFrameworkCore.MySql.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.9.0": {
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "assemblyVersion": "1.9.0.0",
+            "fileVersion": "1.9.0.1"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
         }
       },
       "runtime.native.System/4.3.0": {
@@ -3500,12 +3623,61 @@
       "path": "bouncycastle.netcore/1.8.5",
       "hashPath": "bouncycastle.netcore.1.8.5.nupkg.sha512"
     },
+    "CorePush/3.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fr0J/yXvZLDg46anaeo6p9NlGSIeSFRU9Zqi+wlKdk6nWokBaixotcortFAgiG+AEihgMZwqL1BZC8dTgP6u2Q==",
+      "path": "corepush/3.0.12",
+      "hashPath": "corepush.3.0.12.nupkg.sha512"
+    },
     "EntityFramework/6.4.4": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-yj1+/4tci7Panu3jKDHYizxwVm0Jvm7b7m057b5h4u8NUHGCR8WIWirBTw+8EptRffwftIWPBeIRGNKD1ewEMQ==",
       "path": "entityframework/6.4.4",
       "hashPath": "entityframework.6.4.4.nupkg.sha512"
+    },
+    "FirebaseAdmin/2.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ror9V68bFWdr3VXoCPQrAAJ1ZA8dyLzIHJvy53BmoD83Ze9VuWC9hPBicPqqOANP3VTMWnylC7xci59UEMuU4A==",
+      "path": "firebaseadmin/2.3.0",
+      "hashPath": "firebaseadmin.2.3.0.nupkg.sha512"
+    },
+    "Google.Api.Gax/3.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0OjahFAHTOoprSgvJiQ6/fIQLrUYU4QIFgkuJ51/lcmhZbuXxB3ycPk3JTVEvx6A5yQBL14wgmHgwXLcEsnu3Q==",
+      "path": "google.api.gax/3.2.0",
+      "hashPath": "google.api.gax.3.2.0.nupkg.sha512"
+    },
+    "Google.Api.Gax.Rest/3.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YY4mD0nGxTx1uez7Perm+zAd3FH50dd3+7HTYsRFCywDEtj3RkrMjcAmw6mNpKkw2sRICu7aYNy1mgMjd3nVbw==",
+      "path": "google.api.gax.rest/3.2.0",
+      "hashPath": "google.api.gax.rest.3.2.0.nupkg.sha512"
+    },
+    "Google.Apis/1.49.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fmXQQTxZFOBlnvokvdQMzq0Lt+g2QzpZ4H6U8lMMFHgAR8ZqxQnPN5yHDpoHf7a++hJHb5W3pALxauGsq+afKQ==",
+      "path": "google.apis/1.49.0",
+      "hashPath": "google.apis.1.49.0.nupkg.sha512"
+    },
+    "Google.Apis.Auth/1.49.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3V9ohvixQtjaEvk7T9Ac7E/KvwEPa7eL4aMNreJDI0CEPzCdQdk2zCvaJPRrNIjhe+UuBeOeom1oAOMFB74JHg==",
+      "path": "google.apis.auth/1.49.0",
+      "hashPath": "google.apis.auth.1.49.0.nupkg.sha512"
+    },
+    "Google.Apis.Core/1.49.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9DgGdtyzgrCfHWwc/HiDXDbykNMeKQozbEHYEUEcezRuH+YR3fvq7YGVBDmUM8g6qEL3kDk6h5EU4h0IJwue1w==",
+      "path": "google.apis.core/1.49.0",
+      "hashPath": "google.apis.core.1.49.0.nupkg.sha512"
     },
     "Google.Protobuf/3.14.0": {
       "type": "package",
@@ -3681,6 +3853,13 @@
       "sha512": "sha512-9ErxAAKaDzxXASB/b5uLEkLgUWv1QbeVxyJYEHQwMaxXOeFFVkQxiq8RyfVcifLU7NR0QY0p3acqx4ZpYfhHDg==",
       "path": "microsoft.aspnetcore.webutilities/2.2.0",
       "hashPath": "microsoft.aspnetcore.webutilities.2.2.0.nupkg.sha512"
+    },
+    "Microsoft.Bcl.AsyncInterfaces/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-K63Y4hORbBcKLWH5wnKgzyn7TOfYzevIEwIedQHBIkmkEBA9SCqgvom+XTuE+fAFGvINGkhFItaZ2dvMGdT5iw==",
+      "path": "microsoft.bcl.asyncinterfaces/1.0.0",
+      "hashPath": "microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512"
     },
     "Microsoft.CSharp/4.7.0": {
       "type": "package",
@@ -3996,6 +4175,13 @@
       "sha512": "sha512-15t0Zda7kZFIe3U68komYU18KLGBr5K9lFydWBOycN7Xzb98xopVlyvb07GZb2OKJfX+sInhhD/U+jmHY9ceOg==",
       "path": "pomelo.entityframeworkcore.mysql/5.0.1",
       "hashPath": "pomelo.entityframeworkcore.mysql.5.0.1.nupkg.sha512"
+    },
+    "Portable.BouncyCastle/1.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eZZBCABzVOek+id9Xy04HhmgykF0wZg9wpByzrWN7q8qEI0Qen9b7tfd7w8VA3dOeesumMG7C5ZPy0jk7PSRHw==",
+      "path": "portable.bouncycastle/1.9.0",
+      "hashPath": "portable.bouncycastle.1.9.0.nupkg.sha512"
     },
     "runtime.native.System/4.3.0": {
       "type": "package",

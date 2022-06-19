@@ -29,19 +29,18 @@ namespace FlagApi.Controllers
         public ActionResult List([FromForm] FormData arg)
         {
             try
-            {
+            {                
                 string query = arg.Query;
                 List<User> users = _context.Users
                     .Where(u => u.Name.ToLower().Contains(query.ToLower()) || u.Email.ToLower().Contains(query.ToLower()))
-                    .ToList<User>();
-                Logger.Log(users.Count);
+                    .ToList<User>();                
                 foreach(User u in users){
-                    Logger.Log(u);
+                    _logger.LogInformation(u.ToString());
                 }
                 return Ok(users);
             }
             catch(Exception e){
-                Logger.Error(e);
+                _logger.LogError(e.ToString());
                 return null;
             }
         }
@@ -52,14 +51,14 @@ namespace FlagApi.Controllers
         {                                    
             bool exists = _context.Users.Any(u => u.Email == arg.Email);
             if (!exists) {                
-                Logger.Log("not exists");
+                _logger.LogWarning("not exists");
                 _context.Users.Add(arg);
                 _context.SaveChanges();
-                Logger.Log(arg);
+                _logger.LogInformation(arg.ToString());
             }
             else{
                 User u = _context.Users.First(u => u.Email == arg.Email);
-                Logger.Log(u);
+                _logger.LogInformation(u.ToString());
                 u.PictureUrl = arg.PictureUrl;
                 _context.Users.Update(u);
                 _context.SaveChanges();
@@ -77,7 +76,26 @@ namespace FlagApi.Controllers
                 return Ok(_context.Users.First(u => u.Id == id));
             }
             catch(Exception e){
-                Logger.Error(e);
+                _logger.LogError(e.ToString());
+                return null;
+            }
+        }   
+
+         //Retrieve a list of user based on the keyword searched
+        [HttpPost]
+        [Route("{id}/device")]
+        public ActionResult SetDeviceId(Guid id, [FromForm] string deviceId)
+        {
+            _logger.LogInformation(deviceId);
+            try{
+                User u =  _context.Users.First(u => u.Id == id);
+                u.DeviceId = deviceId;
+                _context.Users.Update(u);
+                _context.SaveChanges();
+                return Ok(u);
+            }
+            catch(Exception e){
+                _logger.LogError(e.ToString());
                 return null;
             }
         }   

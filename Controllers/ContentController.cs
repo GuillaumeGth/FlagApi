@@ -4,12 +4,7 @@ using Microsoft.Extensions.Logging;
 using FlagApi.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using System.Text.Json;
-using NpgsqlTypes;
-using System.Collections.Generic;
-using FlagApi.SignalR;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
 namespace FlagApi.Controllers
 {
     [ApiController]
@@ -36,7 +31,7 @@ namespace FlagApi.Controllers
                 c.ContentPath = Directory.GetCurrentDirectory() + c.ContentPath;
             }
             if (System.IO.File.Exists(c.ContentPath)){
-                Logger.Log("file exist");
+                _logger.LogInformation("file exist");
             }
             Byte[] b = System.IO.File.ReadAllBytes(c.ContentPath);
             return File(b, "image/jpeg");

@@ -23,7 +23,7 @@ namespace FlagApi.Models
         [NotMapped]
         public double Latitude {get; set;}        
         [FromForm(Name = "lon")]
-         [NotMapped]
+        [NotMapped]
         public double Longitude {get; set;}
         [Column("text")]
         [FromForm(Name = "content")]
@@ -31,14 +31,16 @@ namespace FlagApi.Models
         [Column("author_id")]        
         [FromForm(Name = "author")]
         public Guid? AuthorId { get; set; }
-        [ForeignKey("AuthorId")]             
+        [ForeignKey("AuthorId")]
+        [JsonIgnore]           
         public User Author { get; set; }
         [FromForm(Name = "recipient")]
         [Column("recipient_id")]
         public Guid? RecipientId { get; set; }
-        [ForeignKey("RecipientId")]  
+        [ForeignKey("RecipientId")]
+        [JsonIgnore]
         public User Recipient { get; set; }
-        [ForeignKey("content_id")]  
+        [ForeignKey("content_id")]
         public Content Content { get; set; }        
         [FromForm(Name = "seen")]
         [Column("seen")]
