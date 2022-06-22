@@ -14,6 +14,8 @@ namespace FlagApi.Models
         public string Title { get; set; }
         [JsonProperty("body")]
         public string Body { get; set; }
+        [JsonProperty("data")]
+        public Dictionary<string, object> Data { get; set; } = new Dictionary<string, object>();
     }
     public class DataPayload
     {

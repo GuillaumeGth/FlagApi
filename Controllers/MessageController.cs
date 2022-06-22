@@ -112,6 +112,7 @@ namespace FlagApi.Controllers
                     DeviceId = newMessage.Recipient.DeviceId,
                     IsAndroiodDevice = true
                 };
+                notif.Data["location"] = newMessage.Location;
                 var result = await _notificationService.SendNotification(notif);  
                 newMessage.Author = null;
                 newMessage.Recipient = null;          
