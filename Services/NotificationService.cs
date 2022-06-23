@@ -46,22 +46,21 @@ namespace FlagApi.Services
                     DataPayload dataPayload = new DataPayload();
                     dataPayload.Title = notificationModel.Title;
                     dataPayload.Body = notificationModel.Body;
-                    
-                    dataPayload.Data["body"] = notificationModel.Body;
-                    dataPayload.Data["title"] = notificationModel.Title;
+                    dataPayload.Data["data"] = notificationModel.Data;
 
                     GoogleNotification notification = new GoogleNotification();
                     notification.Data = dataPayload;
                     notification.Notification = dataPayload;
-                    Logger.Error(settings.SenderId);
                     var fcm = new FcmSender(settings, httpClient);
                     var fcmSendResponse = await fcm.SendAsync(deviceToken, notification);
                     
                     if (fcmSendResponse.IsSuccess()) {                         
+                        Logger.Error("notification sent");
                         response.IsSuccess = true;
                         response.Message = "Notification sent successfully";
                         return response;
-                    } else {                      
+                    } else {        
+                        Logger.Error(fcmSendResponse.Results[0].Error);
                         response.IsSuccess = false;
                         response.Message = fcmSendResponse.Results[0].Error;
                         return response;
