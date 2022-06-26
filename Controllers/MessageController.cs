@@ -34,27 +34,7 @@ namespace FlagApi.Controllers
             _context = context;
             _contextAccessor = contextAccessor;
             _environment = environment;            
-        }
-        [HttpPost]
-        [Route("get/chat")]
-        public ActionResult Chat(JsonElement arg)
-        {             
-            try{
-                Guid author = Guid.Parse(arg.GetProperty("author").ToString());
-                Guid recipient = Guid.Parse(arg.GetProperty("recipient").ToString());                
-                List<Message> messages = _context.Messages
-                    .Where(m => (m.AuthorId == author && m.RecipientId == recipient)
-                    || (m.AuthorId == recipient && m.RecipientId == author))
-                    .OrderBy(m => m.Date)
-                    .Take(100)?.ToList() ?? new List<Message>();
-                _logger.LogInformation(messages.Count.ToString());
-                return Ok(messages);       
-            }
-            catch(Exception e){                
-                _logger.LogError(e.ToString());
-            }
-            return null;
-        }
+        }        
         [HttpPost]
         [Route("send")]
         public async Task<ActionResult> Send([FromForm] Message arg)
@@ -170,6 +150,15 @@ namespace FlagApi.Controllers
                 _logger.LogError(e.ToString());
                 return null;
             }            
+        }
+        [HttpGet]
+        [Route("chat/{author}/{recipient}")]
+        public ActionResult GetChat(Guid author, Guid recipient){
+            _logger.LogInformation("GET CHAT");
+            var messages = _context.Messages.Where(m => (m.AuthorId == author && m.RecipientId == recipient) 
+            || (m.AuthorId == recipient && m.RecipientId == author)).OrderBy(m => m.Date);            
+            _logger.LogInformation(messages.ToString());
+            return Ok(messages);            
         }
     }
 }

@@ -25,16 +25,23 @@ namespace FlagApi.Controllers
         [HttpGet]
         [Route("{id}")]
         public FileContentResult Get(Guid id)
-        {            
-            Content c = _context.Contents.First(c => c.Id == id);       
-            if (!System.IO.File.Exists(c.ContentPath)){
-                c.ContentPath = Directory.GetCurrentDirectory() + c.ContentPath;
+        {        
+            try{                
+                Content c = _context.Contents.First(c => c.Id == id);       
+                if (!System.IO.File.Exists(c.ContentPath)){
+                    c.ContentPath = Directory.GetCurrentDirectory() + c.ContentPath;
+                }
+                if (System.IO.File.Exists(c.ContentPath)){
+                    _logger.LogInformation("file exist");
+                }
+                Byte[] b = System.IO.File.ReadAllBytes(c.ContentPath);
+                return File(b, "image/jpeg");
+            }    
+            catch(Exception e){
+                _logger.LogError(e.ToString());
+                return null;
             }
-            if (System.IO.File.Exists(c.ContentPath)){
-                _logger.LogInformation("file exist");
-            }
-            Byte[] b = System.IO.File.ReadAllBytes(c.ContentPath);
-            return File(b, "image/jpeg");
+            
         }
     }
 }
