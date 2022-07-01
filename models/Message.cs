@@ -15,8 +15,11 @@ namespace FlagApi.Models
         public Guid? Id { get; set; }
         [Column("date")]        
         public DateTime? Date { get; set; }
-        [Column("content_id")]
-        public Guid? ContentId { get; set; }
+        [FromForm(Name = "contentRef")]
+        [Column("content_ref")]        
+        public string ContentRef { get; set; }
+        // [Column("content_id")]
+        // public Guid? ContentId { get; set; }
         [Column("location")]
         public NpgsqlPoint? Location { get; set; }        
         [FromForm(Name = "lat")]
@@ -40,8 +43,8 @@ namespace FlagApi.Models
         [ForeignKey("RecipientId")]
         [JsonIgnore]
         public User Recipient { get; set; }
-        [ForeignKey("content_id")]
-        public Content Content { get; set; }        
+        // [ForeignKey("content_id")]
+        // public Content Content { get; set; }        
         [FromForm(Name = "seen")]
         [Column("seen")]
         public bool Seen {get; set;}        

@@ -42,26 +42,26 @@ namespace FlagApi.Controllers
            
             try{                
                 _logger.LogInformation("send message");   
-                var files = this.HttpContext.Request.Form.Files;
-                if (files.Count > 0){
-                    string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }  
-                    var file = files[0];                                   
-                    string filePath = Path.Combine(path, file.FileName);
-                    using (Stream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                    {
-                        file.CopyTo(fileStream);
-                    }                                                 
-                    Content c = new Content() {
-                        ContentPath = filePath,
-                        ContentName = file.FileName                
-                    };
-                    _context.Contents.Add(c);
-                    arg.ContentId = c.Id;
-                }                    
+                // var files = this.HttpContext.Request.Form.Files;
+                // if (files.Count > 0){
+                //     string path = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+                //     if (!Directory.Exists(path))
+                //     {
+                //         Directory.CreateDirectory(path);
+                //     }  
+                //     var file = files[0];                                   
+                //     string filePath = Path.Combine(path, file.FileName);
+                //     using (Stream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                //     {
+                //         file.CopyTo(fileStream);
+                //     }                                                 
+                //     Content c = new Content() {
+                //         ContentPath = filePath,
+                //         ContentName = file.FileName                
+                //     };
+                //     _context.Contents.Add(c);
+                //     arg.ContentId = c.Id;
+                // }                    
                                       
                 DateTime dateTime = DateTime.Now;
                 Message newMessage = new Message(){
@@ -70,9 +70,10 @@ namespace FlagApi.Controllers
                     Location = new NpgsqlPoint(
                         arg.Latitude, 
                         arg.Longitude),
+                    ContentRef = arg.ContentRef,
                     AuthorId = arg.AuthorId,
                     RecipientId = arg.RecipientId,
-                    ContentId = arg.ContentId
+                    // ContentId = arg.ContentId
                 };
                 newMessage.Recipient = _context.Users.First(u => u.Id == arg.RecipientId);
                 newMessage.Author = _context.Users.First(u => u.Id == arg.AuthorId);
@@ -102,6 +103,30 @@ namespace FlagApi.Controllers
                 _logger.LogError(e.ToString());
                 return null;
             }
+        }
+        [HttpGet]
+        [Route("chats/{id}")]
+        public ActionResult GetChats(Guid id){
+            var query = from m in _context.Messages
+            join u in _context.Users
+            on m.RecipientId equals u.Id
+            where m.AuthorId == id 
+            group u by new {name = u.Name, id = u.Id, photo = u.PictureUrl } into g
+            select new { id = g.Key.id, name = g.Key.name, photo =  g.Key.photo};
+            
+            var query2 = 
+            from m in _context.Messages
+            join u in _context.Users
+            on m.AuthorId equals u.Id
+            where m.RecipientId == id
+            group u by new {name = u.Name, id = u.Id, photo = u.PictureUrl } into g
+            select new { id = g.Key.id, name = g.Key.name, photo =  g.Key.photo};
+
+            var final = query.Union(query2).Distinct().ToList();
+            final.ForEach(i => {
+                _logger.LogInformation(i.ToString());
+            });            
+            return Ok(query);
         }
         [HttpGet]
         [Route("user/{id}")]
@@ -153,8 +178,7 @@ namespace FlagApi.Controllers
         }
         [HttpGet]
         [Route("chat/{author}/{recipient}")]
-        public ActionResult GetChat(Guid author, Guid recipient){
-            _logger.LogInformation("GET CHAT");
+        public ActionResult GetChat(Guid author, Guid recipient){            
             var messages = _context.Messages.Where(m => (m.AuthorId == author && m.RecipientId == recipient) 
             || (m.AuthorId == recipient && m.RecipientId == author)).OrderBy(m => m.Date);            
             _logger.LogInformation(messages.ToString());
